@@ -1,0 +1,89 @@
+/* Satu ide: layar mengikuti warna langit sesuai waktu solat. */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #fff;
+  background: #020617;
+}
+
+.screen {
+  --sky-top: #020617;
+  --sky-bottom: #1e293b;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding:
+    max(28px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right))
+    max(24px, env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
+  background: linear-gradient(170deg, var(--sky-top) 0%, var(--sky-bottom) 100%);
+}
+
+.screen[data-prayer="subuh"]   { --sky-top: #1e1b4b; --sky-bottom: #5b4bc4; }
+.screen[data-prayer="dzuhur"]  { --sky-top: #075985; --sky-bottom: #0284c7; }
+.screen[data-prayer="ashar"]   { --sky-top: #7c2d12; --sky-bottom: #c2410c; }
+.screen[data-prayer="maghrib"] { --sky-top: #4c1d95; --sky-bottom: #be185d; }
+.screen[data-prayer="isya"]    { --sky-top: #020617; --sky-bottom: #1e293b; }
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+.prayer { margin: 0; font-size: 1.25rem; font-weight: 600; }
+.clock { margin: 0; font-size: 1.125rem; font-variant-numeric: tabular-nums; opacity: 0.85; }
+
+/* Judul surat: serif supaya terasa seperti halaman kitab, bukan dashboard. */
+.surah-list {
+  flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1rem, 4vh, 2rem);
+  text-align: center;
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 12vw, 5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.3);
+}
+.timeline li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 0;
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  opacity: 0.75;
+}
+.timeline b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.timeline li[aria-current="true"] { background: rgba(255, 255, 255, 0.22); opacity: 1; }
+
+.status { margin: auto; max-width: 28ch; text-align: center; line-height: 1.5; opacity: 0.9; }
+
+@media (min-width: 768px) {
+  .screen { padding-inline: max(48px, 8vw); }
+  .timeline { max-width: 560px; width: 100%; margin-inline: auto; }
+}
